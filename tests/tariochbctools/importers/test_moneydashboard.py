@@ -12,6 +12,7 @@ TEST_CONFIG = b"""
     email: something@somewhere.com
     password: some-password
     account: Some:Account
+    all_transactions: false
 """
 
 TEST_TRX = """

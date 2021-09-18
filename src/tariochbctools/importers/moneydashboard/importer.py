@@ -82,6 +82,7 @@ class Importer(importer.ImporterProtocol):
 
         self.existing_entries = existing_entries
         self.account = config["account"]
+        self.all_transactions = config["all_transactions"]
 
     def identify(self, file):
         return path.basename(file.name) == "moneydashboard.yaml"
@@ -92,8 +93,12 @@ class Importer(importer.ImporterProtocol):
     def extract(self, file, existing_entries=None):
         self._configure(file, existing_entries)
 
-        # FIXME: protected access
-        transactions = self.md._get_transactions(2)  # since last login
+        if self.all_transactions:
+            transactions = self.md.get_raw_transactions()  # 65535 of them
+        else:
+            # FIXME: protected access
+            transactions = self.md._get_widget_transactions(2)  # since last login
+
         entries = []
 
         for trx in transactions:
