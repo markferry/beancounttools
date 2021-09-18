@@ -30,6 +30,29 @@ Create a file called bitstamp.yaml in your import location (e.g. downloads folde
 
   CONFIG = [bitstimp.Importer()]
 
+MoneyDashboard
+--------------
+Import from `MoneyDashboard <https://www.moneydashboard.com/>`__ using their API services. e.g. supports VirginMoney.
+
+.. code-block:: python
+
+  from tariochbctools.importers.moneydashboard import importer as mdimp
+
+  CONFIG = [mdimp.Importer()]
+
+Create a file called moneydashboard.yaml in your import location (e.g. download folder).
+
+.. code-block:: yaml
+
+  email: <your-moneydashboard-email-address>
+  password: <your-moneydashboard-password>
+  account: Liabilities:MoneyDashboard
+  all_transactions: false
+
+
+By default only those transactions made since your last login will be downloaded.
+Set `all_transactions` to `true` to download the last 65536 transactions.
+
 
 Revolut
 -------
