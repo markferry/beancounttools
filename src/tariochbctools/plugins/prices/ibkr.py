@@ -1,6 +1,5 @@
 from datetime import datetime
 from os import environ
-from time import sleep
 from typing import Optional
 
 from beancount.core.number import D
@@ -10,31 +9,11 @@ from ibflex import client, parser
 
 
 class Source(source.Source):
-    def download(self, token, queryId):
-        stmt_access = client.request_statement(
-            token,
-            queryId,
-            "https://ndcdyn.interactivebrokers.com/AccountManagement/FlexWebService/SendRequest",
-        )
-        response = client.submit_request(
-            url=stmt_access.Url, token=token, query=stmt_access.ReferenceCode
-        )
-        client.check_statement_response(response)
-
-        return response.content
-
     def get_latest_price(self, ticker: str) -> source.SourcePrice | None:
         token: str = environ["IBKR_TOKEN"]
         queryId: str = environ["IBKR_QUERY_ID"]
 
-        try:
-            response = self.download(token, queryId)
-        except client.ResponseCodeError as e:
-            if e.code == "1018":
-                sleep(10)
-                response = self.download(token, queryId)
-            else:
-                raise e
+        response = client.download(token, queryId)
 
         statement = parser.parse(response)
         for custStatement in statement.FlexStatements:
