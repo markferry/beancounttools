@@ -41,19 +41,6 @@ class Importer(beangulp.Importer):
             and t["account"] == account
         )
 
-    def download(self, token, queryId):
-        stmt_access = client.request_statement(
-            token,
-            queryId,
-            "https://ndcdyn.interactivebrokers.com/AccountManagement/FlexWebService/SendRequest",
-        )
-        response = client.submit_request(
-            url=stmt_access.Url, token=token, query=stmt_access.ReferenceCode
-        )
-        client.check_statement_response(response)
-
-        return response.content
-
     def extract(self, filepath: str, existing: data.Entries) -> data.Entries:
         with open(filepath, "r") as f:
             config = yaml.safe_load(f)
@@ -62,7 +49,7 @@ class Importer(beangulp.Importer):
 
         priceLookup = PriceLookup(existing, config["baseCcy"])
 
-        response = self.download(token, queryId)
+        response = client.download(token, queryId)
 
         statement = parser.parse(response)
         assert isinstance(statement, Types.FlexQueryResponse)

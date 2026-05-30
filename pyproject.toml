@@ -24,14 +24,14 @@ dependencies = [
     "bitstampclient",
     "mt-940",
     "pyyaml",
-    "ibflex",
+    "ibflex>=1.1",
     "requests",
     "camelot-py",
     "opencv-python-headless",
     "blockcypher",
     "imap-tools",
     "undictify",
-    "rsa"
+    "rsa",
 ]
 
 [project.urls]
