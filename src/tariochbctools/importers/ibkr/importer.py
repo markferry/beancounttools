@@ -46,10 +46,11 @@ class Importer(beangulp.Importer):
             config = yaml.safe_load(f)
         token = config["token"]
         queryId = config["queryId"]
+        period = config["period"] if "period" in config else None
 
         priceLookup = PriceLookup(existing, config["baseCcy"])
 
-        response = client.download(token, queryId)
+        response = client.download(token, queryId, period=period)
 
         statement = parser.parse(response)
         assert isinstance(statement, Types.FlexQueryResponse)
