@@ -243,6 +243,7 @@ Create a file called (or ending with) ibkr.yaml in your import location (e.g. do
   token: <flex web query token>
   queryId: <flex query id>
   baseCcy: CHF
+  period: 90 # optional, allows to use Last-N days option in the flex query
 
 .. code-block:: python
 
